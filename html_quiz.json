@@ -1,0 +1,50 @@
+{
+    "name": "HTML & CSS Quiz",
+    "desc": "Test your HTML & CSS knowledge with this easy quiz!",
+    "questions": [
+        {
+            "question": "This is a placeholder HTML question.",
+            "image": "static/cover.jpg",
+            "answers": [
+                {"key": "a", "text": "Answer A"},
+                {"key": "b", "text": "Answer B"},
+                {"key": "c", "text": "Answer C"},
+                {"key": "d", "text": "Answer D"}        
+            ],
+            "correct": "a"
+        },
+        {
+            "question": "This is the second placeholder question.",
+            "image": "static/cover.jpg",
+            "answers": [
+                {"key": "a", "text": "Answer A2"},
+                {"key": "b", "text": "Answer B2"},
+                {"key": "c", "text": "Answer C2"},
+                {"key": "d", "text": "Answer D2"}
+            ],
+            "correct": "b"
+        },
+        {
+            "question": "This is the third placeholder question.",
+            "image": "static/cover.jpg",
+            "answers": [
+                {"key": "a", "text": "Answer A3"},
+                {"key": "b", "text": "Answer B3"},
+                {"key": "c", "text": "Answer C3"},
+                {"key": "d", "text": "Answer D3"}
+            ],
+            "correct": "c"
+        },
+        {
+            "question": "This is the fourth placeholder question.",
+            "image": "static/cover.jpg",
+            "answers": [
+                {"key": "a", "text": "Answer A4"},
+                {"key": "b", "text": "Answer B4"},
+                {"key": "c", "text": "Answer C4"},
+                {"key": "d", "text": "Answer D4"}
+            ],
+            "correct": "d"
+        }
+    ]
+}

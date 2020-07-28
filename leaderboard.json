@@ -1,0 +1,31 @@
+{
+    "python_quiz": [
+        {
+            "name": "Alex H.",
+            "score": "4",
+            "time": "40"
+        },
+        {
+            "name": "Jack M.",
+            "score": "3",
+            "time": "44"
+        },
+        {
+            "name": "Lewis P.",
+            "score": "7",
+            "time": "26"
+        }
+    ],
+    "html_quiz": [
+        {
+            "name": "G.G. Allin",
+            "score": "4",
+            "time": "53"
+        },
+        {
+            "name": "E. Andre",
+            "score": "1",
+            "time": "21"
+        }
+    ]
+}

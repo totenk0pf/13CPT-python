@@ -1,0 +1,116 @@
+{
+    "name": "Python quiz",
+    "desc": "Test your Python knowledge with this easy quiz!",
+    "questions": [
+        {
+            "question": "What is the function used to output a string to the console?",
+            "image": "static/cover.jpg",
+            "answers": [
+                {"key": "a", "text": "print()"},
+                {"key": "b", "text": "System.out.println()"},
+                {"key": "c", "text": "console.log()"},
+                {"key": "d", "text": "cout <<"}        
+            ],
+            "correct": "a"
+        },
+        {
+            "question": "How can you iterate through a list using a loop?",
+            "image": "static/cover.jpg",
+            "answers": [
+                {"key": "a", "text": "while list == True:"},
+                {"key": "b", "text": "iterate(list)"},
+                {"key": "c", "text": "for element in list:"},
+                {"key": "d", "text": "for (i=0; i<len(list); i+=1) {}"}
+            ],
+            "correct": "c"
+        },
+        {
+            "question": "What is the correct way of importing an external module?",
+            "image": "static/cover.jpg",
+            "answers": [
+                {"key": "a", "text": "import(<module>)"},
+                {"key": "b", "text": "import <module>"},
+                {"key": "c", "text": "py -m import <module>"},
+                {"key": "d", "text": "python.import(<module>)"}
+            ],
+            "correct": "b"
+        },
+        {
+            "question": "Why should you open a file using 'with open('file') as file_obj:' instead of file_obj = open('file')?",
+            "image": "static/cover.jpg",
+            "answers": [
+                {"key": "a", "text": "Because of conventional syntaxes."},
+                {"key": "b", "text": "Because it isn't a variable."},
+                {"key": "c", "text": "Because files can only be opened using 'with'."},
+                {"key": "d", "text": "Because with automatically closes the file."}
+            ],
+            "correct": "d"
+        },
+        {
+            "question": "How can a class be initialized?",
+            "image": "static/cover.jpg",
+            "answers": [
+                {"key": "a", "text": "class.init(self)"},
+                {"key": "b", "text": "class(self, init)"},
+                {"key": "c", "text": "def __init__(self)"},
+                {"key": "d", "text": "Classes don't need initialization."}
+            ],
+            "correct": "c"
+        },
+        {
+            "question": "What is the main purpose of 'if __name__ == '__main__':'?",
+            "image": "static/cover.jpg",
+            "answers": [
+                {"key": "a", "text": "Check if the script file is being loaded externally or internally."},
+                {"key": "b", "text": "Compare the name of the script to a given string."},
+                {"key": "c", "text": "Compare the variable __name__ to the string '__main__'."},
+                {"key": "d", "text": "Check if the script file is currently being executed."}
+            ],
+            "correct": "a"
+        },
+        {
+            "question": "What is a 'lambda' function?",
+            "image": "static/cover.jpg",
+            "answers": [
+                {"key": "a", "text": "An anonymous function."},
+                {"key": "b", "text": "A function defined using 'def lambda():'"},
+                {"key": "c", "text": "A function which returns a lambda."},
+                {"key": "d", "text": "A function which communicates with AWS Lambda."}
+            ],
+            "correct": "a"
+        },
+        {
+            "question": "What is the standard GUI library that comes installed with Python?",
+            "image": "static/cover.jpg",
+            "answers": [
+                {"key": "a", "text": "Nuklear"},
+                {"key": "b", "text": "imGUI"},
+                {"key": "c", "text": "PyQT"},
+                {"key": "d", "text": "Tkinter"}
+            ],
+            "correct": "d"
+        },
+        {
+            "question": "What is the difference between math.floor() and the standard floor division?",
+            "image": "static/cover.jpg",
+            "answers": [
+                {"key": "a", "text": "math.floor() can handle more complex numbers."},
+                {"key": "b", "text": "Standard floor division is faster."},
+                {"key": "c", "text": "The ability to handle floating point numbers."},
+                {"key": "d", "text": "There are no differences"}
+            ],
+            "correct": "b"
+        },
+        {
+            "question": "How can you access an object after its initial creation using a loop?",
+            "image": "static/cover.jpg",
+            "answers": [
+                {"key": "a", "text": "Assign a variable name to the object and manually access it later on."},
+                {"key": "b", "text": "An object cannot be accessed using a loop after its initialization."},
+                {"key": "c", "text": "Append the object to a list and loop through the list."},
+                {"key": "d", "text": "Call the object."}
+            ],
+            "correct": "c"
+        }
+    ]
+}

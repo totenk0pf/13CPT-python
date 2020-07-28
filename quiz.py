@@ -1,7 +1,15 @@
+#   13CPT - Python Quiz Assessment
+# -----------------------------------
+#   This could have been much easier if we were allowed to complete this standard using Java.
+#   But, knowing NZQA, Python is the only way to go. ¯\_(ツ)_/¯
+# -----------------------------------
+#   https://github.com/totenk0pf/13CPT-python
+# -----------------------------------
+
 import os, sys, time, threading, functools, json
 import tkinter.ttk as ttk
 
-from tkinter import Tk, Frame, LabelFrame, Button, Label, PhotoImage, Radiobutton, Menu, StringVar, IntVar
+from tkinter import Tk, Frame, LabelFrame, Button, Label, PhotoImage, Radiobutton, Menu, StringVar, IntVar, Toplevel, filedialog, simpledialog
 from PIL import Image, ImageTk
 
 # Defining the variables for the quiz.
@@ -13,18 +21,18 @@ class Variables():
         self.time_text = StringVar()
         self.correct_text = StringVar()
         self.in_progress = False
+        self.current_tab = 0
 
     def set_info(self):
         self.name.set(self.questions["name"])
         self.desc.set(self.questions["desc"])
 
-# Initializing the GUI for the quiz, along with the implementation of dynamically-created widgets.
+# Initializes the GUI for the quiz, along with the implementation of dynamically-created widgets.
 class QuizGUI(Frame):
     def __init__(self, master=None):
         self.widget_list = []
         self.image_list = []
         self.button_list = []
-        self.current_tab = 0
 
         Frame.__init__(self, master)
         self.style_manager = ttk.Style()
@@ -33,34 +41,32 @@ class QuizGUI(Frame):
         self.master.title("Python Quiz Framework")
         self.master.resizable(False, False)
         # self.master.attributes('-topmost', True)
-        self.master.grid_columnconfigure(1, weight=1, uniform="col")
-        self.master.grid_columnconfigure(2, weight=1, uniform="col")
         self.grid(column=0, row=0, padx=(20,20), pady=(10,20))
 
         self.menubar = Menu(self)
         self.filemenu = Menu(self.menubar, tearoff=0)
-        self.filemenu.add_command(label="Open")
-        self.filemenu.add_command(label="Exit", command=self.destroy)
-        self.menubar.add_cascade(label="File", menu=self.filemenu)
+        self.filemenu.add_command(label="Load quiz", command=lambda: file_handler.parse_file(filedialog.askopenfile("r")))
+        self.filemenu.add_command(label="Leaderboard", command=handler.show_leaderboard)
+        self.filemenu.add_command(label="Exit", command=root.destroy)
+        self.menubar.add_cascade(label="Quiz", menu=self.filemenu)
         self.helpmenu = Menu(self.menubar, tearoff=0)
         self.helpmenu.add_command(label="About")
         self.menubar.add_cascade(label="Help", menu=self.helpmenu)
         self.master.config(menu=self.menubar)
 
-        self.info_frame = LabelFrame(self, text="Current quizset:")
-        self.info_frame.grid(column=1, row=1, sticky="ew", padx=(0,8))
+        self.info_frame = LabelFrame(self, text="Current quiz:")
+        self.info_frame.grid(column=0, row=0, padx=(0,10), sticky="nsew")
         self.quiz_name_label = Label(self.info_frame, text="Name:")
         self.quiz_name_label.grid(column=0, row=0, padx=(10,0), pady=(10,0), sticky="w")
         self.quiz_name = Label(self.info_frame, textvariable=var.name)
         self.quiz_name.grid(column=1, row=0, padx=(0,10), pady=(10,0), sticky="w")
         self.quiz_desc_label = Label(self.info_frame, text="Description:")
-        self.quiz_desc_label.grid(column=0, row=1, padx=(10,0), pady=(0,10), sticky="w")
-        self.quiz_desc = Label(self.info_frame, textvariable=var.desc)
+        self.quiz_desc_label.grid(column=0, row=1, padx=(10,0), pady=(0,10), sticky="nw")
+        self.quiz_desc = Label(self.info_frame, textvariable=var.desc, wraplength=300, justify="left")
         self.quiz_desc.grid(column=1, row=1, padx=(0,10), pady=(0,10), sticky="w")
-        self.quiz_load = Button(self.info_frame, text="Load quiz")
 
         self.stat_frame = LabelFrame(self, text="Statistics:")
-        self.stat_frame.grid(column=2, row=1, sticky="ew", padx=(8,0))
+        self.stat_frame.grid(column=1, row=0, sticky="nsew", padx=(10,0))
         self.timer_label = Label(self.stat_frame, text="Time:")
         self.timer_label.grid(column=0, row=0, padx=(10,0), pady=(10,0), sticky="w")
         self.timer = Label(self.stat_frame, textvariable=var.time_text)
@@ -71,56 +77,175 @@ class QuizGUI(Frame):
         self.score.grid(column=1, row=1, padx=(0,10), pady=(0,10), sticky="w")
 
         self.quiz_frame = LabelFrame(self, text="Quiz:")
-        self.quiz_frame.grid(column=1, row=2, pady=(10,10), columnspan=2)
+        self.quiz_frame.grid(column=0, row=1, pady=(10,10), columnspan=2, sticky="ew")
         self.quiz_notebook = ttk.Notebook(self.quiz_frame)
-        self.quiz_notebook.grid(column=0, row=1, padx=(10,10), pady=(10,10))
+        self.quiz_notebook.grid(column=0, row=1, padx=(10,10), pady=(10,10), sticky="ew")
         self.add_questions()
 
         self.options_frame = Frame(self)
-        self.options_frame.grid(column=1, row=3, columnspan=2)
+        self.options_frame.grid(column=0, row=2, columnspan=2)
         self.start_button = Button(self.options_frame, text="Start", command=handler.start_quiz)
         self.start_button.grid(column=0, row=0, ipadx=20, ipady=5, padx=(0,10))
         self.reset_button = Button(self.options_frame, text="Reset", state="disabled", command=handler.reset_quiz)
-        self.reset_button.grid(column=1, row=0, ipadx=20, ipady=5, padx=(0,0))
+        self.reset_button.grid(column=1, row=0, ipadx=20, ipady=5, padx=(0,10))
+        self.board_button = Button(self.options_frame, text="Leaderboard", command=handler.show_leaderboard)
+        self.board_button.grid(column=2, row=0, ipadx=20, ipady=5, padx=(0,10))
+        self.load_button = Button(self.options_frame, text="Load quiz", command=lambda: file_handler.parse_file(filedialog.askopenfile("r")))
+        self.load_button.grid(column=3, row=0, ipadx=20, ipady=5, padx=(0,0))
 
     def add_questions(self):
         for q in range(0, len(var.questions["questions"])):
-            self.question_num = "Question " + str(q+1)
-            self.current_question = var.questions["questions"][q]["question"]
+            self.question_num = "Question " + str(q+1) + ": "
+            self.current_question = self.question_num + var.questions["questions"][q]["question"]
             self.current_image = var.questions["questions"][q]["image"]
             self.answer_list = var.questions["questions"][q]["answers"]
 
             self.question_frame = Frame(self.quiz_notebook)
             self.quiz_notebook.add(self.question_frame, text=self.question_num)
             self.question_label = Label(self.question_frame, text=self.current_question)
-            self.question_label.grid(column=0, row=0, padx=(10,10), pady=(10,10))
+            self.question_label.grid(column=0, row=0, padx=(0,10), pady=(10,10))
             self.image_obj = ImageTk.PhotoImage(Image.open(self.current_image))
             self.image_list.append(self.image_obj)
             self.question_image = Label(self.question_frame, image=self.image_list[q], relief="ridge")
-            self.question_image.grid(column=0, row=1, padx=(10,10), pady=(0,10))
-            for i in enumerate(self.answer_list):
+            self.question_image.grid(column=0, row=1, padx=(10,10), pady=(0,10), sticky="ew")
+            for i in enumerate(self.answer_list, 1):
                 # Refrain from using lambda to attach a function without initially triggering it,
                 # as the argument doesn't get passed until the very last iteration of the for loop.
                 self.quiz_answer = Button(self.question_frame, text=i[1]["text"], command=functools.partial(self.add_check, answer_arg=i[1]["key"], question_idx=q))
                 self.button_list.append(self.quiz_answer)
-                self.quiz_answer.grid(column=0, row=2+i[0], padx=(10,10), ipady=10, sticky="ew")
+                if i[0] % 4 != 0:
+                    self.quiz_answer.grid(column=0, row=2+i[0], padx=(10,10), ipady=10, sticky="ew")
+                else:
+                    self.quiz_answer.grid(column=0, row=2+i[0], padx=(10,10), pady=(0,10), ipady=10, sticky="ew")
 
     def add_check(self, answer_arg, question_idx):
         handler.check_answers(answer_arg, question_idx)
 
+# Initializes and hides the result GUI.
+class ResultGUI(Toplevel):
+    def __init__(self, master=None):
+        Toplevel.__init__(self, master)
+        self.title("Result")
+        self.resizable(False, False)
+        self.final_time = StringVar()
+        self.final_score = StringVar()
+        self.final_msg = StringVar()
+        self.msg_list = [
+            (0, 20, "Are you even trying?"),
+            (20, 40, "Try harder!"),
+            (40, 60, "Keep trying!"),
+            (60, 80, "You're getting there!"),
+            (80, 100, "Almost there!"),
+            (100, 100, "Perfect score!")
+        ]
+
+        self.stat_frame = LabelFrame(self, text="Final results:")
+        self.stat_frame.grid(column=0, row=0, padx=(20,20), pady=(20,0), sticky="ew", columnspan=2)
+        self.timer_label = Label(self.stat_frame, text="Time:")
+        self.timer_label.grid(column=0, row=0, padx=(10,0), pady=(10,0), sticky="w")
+        self.timer = Label(self.stat_frame, textvariable=self.final_time, justify="left")
+        self.timer.grid(column=1, row=0, padx=(0,10), pady=(10,0), sticky="w")
+        self.score_label = Label(self.stat_frame, text="Correct:")
+        self.score_label.grid(column=0, row=1, padx=(10,0), pady=(0,10), sticky="w")
+        self.score = Label(self.stat_frame, textvariable=self.final_score, justify="left")
+        self.score.grid(column=1, row=1, padx=(0,10), pady=(0,10), sticky="w")
+        self.msg = Label(self.stat_frame, textvariable=self.final_msg)
+        self.msg.grid(column=0, row=2, padx=(10,10), pady=(0,10), columnspan=2)
+        self.ok_button = Button(self, text="OK", command=self.hide)
+        self.ok_button.grid(column=0, row=1, padx=(20,10), pady=(10,20), sticky="ew")
+        self.board_button = Button(self, text="Leaderboard", command=handler.show_leaderboard)
+        self.board_button.grid(column=1, row=1, padx=(0,20), pady=(10,20), sticky="ew")
+        self.hide()
+
+    def get_results(self):
+        self.final_time.set(var.time_text.get())
+        self.final_score.set(var.correct_text.get())
+        self.percentage = (handler.correct_int / len(var.questions["questions"])) * 100
+        for i in self.msg_list:
+            if i[0] <= self.percentage < i[1]:
+                self.final_msg.set(i[2])
+
+    def show(self):
+        self.get_results()
+        self.deiconify()
+
+    def hide(self):
+        self.withdraw()
+
+class LeaderboardGUI(Toplevel):
+    def __init__(self, master=None):
+        Toplevel.__init__(self, master)
+        self.title("Leaderboard")
+        self.resizable(False, False)
+        self.hide()
+
+        self.board = ttk.Treeview(self)
+        self.board["columns"] = ("1","2","3")
+        self.board.column("#0", width="25", minwidth="25", stretch=False, anchor="w")
+        self.board.column("1", width="100", minwidth="100", stretch=False)
+        self.board.column("2", width="60", minwidth="60", stretch=False)
+        self.board.column("3", width="60", minwidth="60", stretch=False)
+        self.board.heading("#0", text="No.", anchor="w")
+        self.board.heading("1", text="Name")
+        self.board.heading("2", text="Score")
+        self.board.heading("3", text="Time")
+        self.board.grid(column=0, row=0, padx=(10,10), pady=(10,10))
+        self.ok_button = Button(self, text="OK", command=self.hide)
+        self.ok_button.grid(column=0, row=1, padx=(10,10), pady=(0,10), sticky="ew")
+        
+        self.board.bind("<Button-1>", self.handle_click)
+
+    def handle_click(self, event):
+        if self.board.identify_region(event.x, event.y) == "separator":
+            return "break"
+
+    def show(self):
+        self.deiconify()
+        file_handler.parse_leaderboard()
+
+    def hide(self):
+        self.withdraw()
+
+# Handler for tasks related to loading files and parsing data from the aforementioned files.
 class FileHandler():
     def __init__(self):
-        with open("python_quizset.json", "r") as quizset:
-            quizset_data = quizset.read()
-            quiz_dict = json.loads(quizset_data)
+        self.board_json = {}
+        self.current_file = "python_quiz"
+        self.current_file_data = ""
+        with open((self.current_file + ".json"), "r") as quiz:
+            quiz_data = quiz.read()
+            quiz_dict = json.loads(quiz_data)
             var.questions = quiz_dict
+        with open("leaderboard.json", "r") as board_file:
+            self.board_data = board_file.read()
+            self.board_json = json.loads(self.board_data)
         var.set_info()
+
+    def parse_file(self, file_obj):
+        try:
+            self.current_file = os.path.basename(file_obj.name).split(".")[0]
+            self.current_file_data = file_obj.read()
+            var.questions = json.loads(self.current_file_data)
+            var.set_info()
+            for i in gui.quiz_notebook.winfo_children():
+                i.destroy()
+            gui.add_questions()
+            handler.reset_quiz()
+        except:
+            print("Tried to load invalid quiz.")
+
+    def parse_leaderboard(self):
+        for i in leader_gui.board.get_children():
+            leader_gui.board.delete(i)
+        for i in enumerate(self.board_json[self.current_file], 1):
+            leader_gui.board.insert("", "end", text=i[0], values=(i[1]["name"], i[1]["score"], i[1]["time"]))
 
 # Handler for various tasks related to the quiz.
 class QuizHandler():
     def __init__(self):
         self.measured_time = 0
         self.correct_int = 0
+        self.leaderboard_json = []
         self.set_time()
         self.set_answer()
 
@@ -137,51 +262,80 @@ class QuizHandler():
             time.sleep(1)
         self.set_time()
 
-    def start_quiz(self):
-        var.in_progress = True
+    def set_state(self, state:str):
         for frame in gui.quiz_notebook.winfo_children():
             for wdg in frame.winfo_children():
-                wdg.configure(state="active")
+                wdg.configure(state=state)
+
+    # Starts the quiz
+    def start_quiz(self):
+        var.in_progress = True
+        self.set_state("active")
+        # Timer is being ran in another thread because using root.after() will literally freeze the main thread. The timer thread will be terminated upon exit as it is a daemon thread.
         self.time_thread = threading.Thread(target=self.timer, daemon=True)
         self.measured_time = 0
         self.correct_int = 0
+        var.current_tab = 0
+        gui.quiz_notebook.select(var.current_tab)
         self.set_time()
         self.set_answer()
         self.time_thread.start()
         gui.start_button.configure(state="disabled")
         gui.reset_button.configure(state="active")
 
+    # Resets the quiz
     def reset_quiz(self):
         var.in_progress = False
-        for frame in gui.quiz_notebook.winfo_children():
-            for wdg in frame.winfo_children():
-                wdg.configure(state="disabled")
+        self.set_state("disabled")
         self.measured_time = 0
         self.correct_int = 0
         self.set_time()
         # Approximate time it takes for the timer thread to stop, this is a workaround 
-        # and should not be implemented in production. However, this is a personal project.
+        # and should not be implemented in production. However, this is a personal project,
+        # which means all of that shouldn't be an issue.
         time.sleep(1)
         gui.start_button.configure(state="active")
         gui.reset_button.configure(state="disabled")
 
-    def check_answers(self, answer, index):
+    def finish_quiz(self):
+        self.leader_list = file_handler.board_json[file_handler.current_file]
+        self.leader_list.sort(key=lambda x: (x["score"], x["time"]), reverse=True)
+        print(self.leader_list)
+        self.reset_quiz()
+
+    def check_finish(self):
+        if var.current_tab < len(var.questions["questions"]) - 1:
+            var.current_tab += 1
+            gui.quiz_notebook.select(var.current_tab)
+        else:
+            result_gui.show()
+            self.finish_quiz()
+
+    # Checks the passed arguments by comparing them to the correct answer key provided in the Variables() class,
+    # and proceeds to the next question if it is correct.
+    def check_answers(self, answer:str, index:int):
         if answer == var.questions["questions"][index]["correct"] and self.correct_int < len(var.questions["questions"]):
             self.correct_int += 1
             self.set_answer()
-            if gui.current_tab < len(var.questions["questions"]) - 1:
-                gui.current_tab += 1
-                gui.quiz_notebook.select(gui.current_tab)
-            else:
-                self.reset_quiz()
+            self.check_finish()
+        else:
+            self.set_answer()
+            self.check_finish()
 
+    def show_leaderboard(self):
+        leader_gui.show()
+
+# Initializing the classes
 root = Tk()
 var = Variables()
 file_handler = FileHandler()
 handler = QuizHandler()
 
 gui = QuizGUI(root)
+result_gui = ResultGUI(root)
+leader_gui = LeaderboardGUI(root)
 
+# Triggering a reset of the variables so the quiz starts disabled.
 handler.reset_quiz()
 
 if __name__ == "__main__":
