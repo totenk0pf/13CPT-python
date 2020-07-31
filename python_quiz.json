@@ -42,7 +42,7 @@
                 {"key": "a", "text": "Because of conventional syntaxes."},
                 {"key": "b", "text": "Because it isn't a variable."},
                 {"key": "c", "text": "Because files can only be opened using 'with'."},
-                {"key": "d", "text": "Because with automatically closes the file."}
+                {"key": "d", "text": "Because 'with' automatically closes the file."}
             ],
             "correct": "d"
         },

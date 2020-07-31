@@ -1,31 +1,56 @@
 {
-    "python_quiz": [
-        {
-            "name": "Alex H.",
-            "score": "4",
-            "time": "40"
-        },
-        {
-            "name": "Jack M.",
-            "score": "3",
-            "time": "44"
-        },
-        {
-            "name": "Lewis P.",
-            "score": "7",
-            "time": "26"
-        }
-    ],
-    "html_quiz": [
-        {
-            "name": "G.G. Allin",
-            "score": "4",
-            "time": "53"
-        },
-        {
-            "name": "E. Andre",
-            "score": "1",
-            "time": "21"
-        }
-    ]
+	"python_quiz": [
+		{
+			"name": "Nathan C.",
+			"score": 3,
+			"time": 51
+		},
+		{
+			"name": "Jack K.",
+			"score": 3,
+			"time": 44
+		},
+		{
+			"name": "Alex O.",
+			"score": 4,
+			"time": 40
+		},
+		{
+			"name": "Lewis C.",
+			"score": 7,
+			"time": 26
+		},
+		{
+			"name": "Test",
+			"score": 3,
+			"time": 4
+		},
+		{
+			"name": "idk",
+			"score": 3,
+			"time": 4
+		},
+		{
+			"name": "h",
+			"score": 3,
+			"time": 3
+		},
+		{
+			"name": "Test user",
+			"score": 3,
+			"time": 10
+		}
+	],
+	"html_quiz": [
+		{
+			"name": "Hannibal B.",
+			"score": 4,
+			"time": 53
+		},
+		{
+			"name": "Eric A.",
+			"score": 1,
+			"time": 21
+		}
+	]
 }
