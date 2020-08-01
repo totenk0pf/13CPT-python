@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 #   13CPT - Python Quiz Assessment
 # -----------------------------------
 #   This could have been much easier if we were allowed to complete this standard using Java.
@@ -37,7 +38,6 @@ class QuizGUI(Frame):
 
         Frame.__init__(self, master)
         self.style_manager = ttk.Style()
-        self.style_manager.theme_use("xpnative")
         self.style_manager.layout("TNotebook.Tab", [])
         self.master.title("Python Quiz Framework")
         self.master.resizable(False, False)
