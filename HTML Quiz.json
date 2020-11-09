@@ -1,0 +1,50 @@
+{
+    "name": "HTML & CSS Quiz",
+    "desc": "Test your HTML & CSS knowledge with this easy quiz!",
+    "questions": [
+        {
+            "question": "What is the correct way to link a CSS file in your HTML?",
+            "image": "static/placeholder.png",
+            "answers": [
+                {"key": "a", "text": "<link href='file.css'>"},
+                {"key": "b", "text": "<css src='file.css'>"},
+                {"key": "c", "text": "<link>file.css</link>"},
+                {"key": "d", "text": "<stylesheet href='file.css'>"}        
+            ],
+            "correct": "a"
+        },
+        {
+            "question": "When should a JavaScript file be loaded?",
+            "image": "static/placeholder.png",
+            "answers": [
+                {"key": "a", "text": "In the header section of the HTML file."},
+                {"key": "b", "text": "At the end of the HTML body."},
+                {"key": "c", "text": "A JavaScript file should be injected into the file."},
+                {"key": "d", "text": "In the footer section of the HTML file."}
+            ],
+            "correct": "b"
+        },
+        {
+            "question": "What can the <code> tag be used for?",
+            "image": "static/placeholder.png",
+            "answers": [
+                {"key": "a", "text": "Inserting a JavaScript excerpt."},
+                {"key": "b", "text": "Obfuscate the text using encryption."},
+                {"key": "c", "text": "Displaying computer code."},
+                {"key": "d", "text": "Executing a JavaScript function."}
+            ],
+            "correct": "c"
+        },
+        {
+            "question": "Why should HTML code be indented properly?",
+            "image": "static/placeholder.png",
+            "answers": [
+                {"key": "a", "text": "Because it is mandatory to do so."},
+                {"key": "b", "text": "Code has to be indented for elements to group."},
+                {"key": "c", "text": "For faster execution at runtime."},
+                {"key": "d", "text": "To improve readability for developers."}
+            ],
+            "correct": "d"
+        }
+    ]
+}

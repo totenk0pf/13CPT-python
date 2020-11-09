@@ -1,14 +1,9 @@
 {
-	"python_quiz": [
+	"Python Quiz": [
 		{
-			"name": "Nathan C.",
-			"score": 3,
-			"time": 51
-		},
-		{
-			"name": "Jack K.",
-			"score": 3,
-			"time": 44
+			"name": "Lewis C.",
+			"score": 7,
+			"time": 26
 		},
 		{
 			"name": "Alex O.",
@@ -16,32 +11,17 @@
 			"time": 40
 		},
 		{
-			"name": "Lewis C.",
-			"score": 7,
-			"time": 26
+			"name": "Jack K.",
+			"score": 3,
+			"time": 44
 		},
 		{
-			"name": "Test",
+			"name": "Nathan C.",
 			"score": 3,
-			"time": 4
-		},
-		{
-			"name": "idk",
-			"score": 3,
-			"time": 4
-		},
-		{
-			"name": "h",
-			"score": 3,
-			"time": 3
-		},
-		{
-			"name": "Test user",
-			"score": 3,
-			"time": 10
+			"time": 51
 		}
 	],
-	"html_quiz": [
+	"HTML Quiz": [
 		{
 			"name": "Hannibal B.",
 			"score": 4,
